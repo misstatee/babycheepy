@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { messagingApi } from '@line/bot-sdk';
-import type { webhook } from '@line/bot-sdk';
 import crypto from 'node:crypto';
 import { getFAQ, getCachedFAQ } from '@/lib/sheet';
 import { askGemini, DEFAULT_REPLY } from '@/lib/gemini';
+
+type LineMessage = { type: string; text?: string; id?: string };
+type LineEvent = { type: string; replyToken?: string; message?: LineMessage };
+type LineWebhookBody = { destination: string; events: LineEvent[] };
 
 function verifySignature(body: string, signature: string, secret: string): boolean {
   const digest = crypto.createHmac('SHA256', secret).update(body).digest('base64');
@@ -19,9 +22,9 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
-  let parsed: webhook.WebhookRequestBody;
+  let parsed: LineWebhookBody;
   try {
-    parsed = JSON.parse(body) as webhook.WebhookRequestBody;
+    parsed = JSON.parse(body) as LineWebhookBody;
   } catch {
     return NextResponse.json({ error: 'Bad Request' }, { status: 400 });
   }
@@ -32,13 +35,11 @@ export async function POST(req: NextRequest) {
 
   for (const event of parsed.events) {
     if (event.type !== 'message') continue;
+    if (event.message?.type !== 'text') continue;
+    if (!event.replyToken) continue;
 
-    const msgEvent = event as webhook.MessageEvent;
-    if (msgEvent.message.type !== 'text') continue;
-    if (!msgEvent.replyToken) continue;
-
-    const userMessage = (msgEvent.message as webhook.TextMessageContent).text;
-    const replyToken = msgEvent.replyToken;
+    const userMessage = event.message.text ?? '';
+    const replyToken = event.replyToken;
 
     let faqCsv: string;
     try {
