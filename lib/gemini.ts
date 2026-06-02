@@ -36,12 +36,21 @@ export async function askGemini(faqCsv: string, userMessage: string): Promise<st
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) throw new Error('GEMINI_API_KEY is not set');
 
+  console.log('[Gemini] calling with key prefix:', apiKey.slice(0, 10));
+
   const ai = new GoogleGenAI({ apiKey });
 
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.0-flash',
-    contents: buildPrompt(faqCsv, userMessage),
-  });
+  let response: Awaited<ReturnType<typeof ai.models.generateContent>>;
+  try {
+    response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash',
+      contents: buildPrompt(faqCsv, userMessage),
+    });
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : JSON.stringify(err);
+    console.error('[Gemini] API call failed:', msg);
+    throw err;
+  }
 
   const finishReason = response.candidates?.[0]?.finishReason;
   const thoughtsTokenCount = response.usageMetadata?.thoughtsTokenCount ?? 0;
