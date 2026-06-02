@@ -43,7 +43,7 @@ export async function askGemini(faqCsv: string, userMessage: string): Promise<st
   let response: Awaited<ReturnType<typeof ai.models.generateContent>>;
   try {
     response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash',
+      model: 'gemini-1.5-flash',
       contents: buildPrompt(faqCsv, userMessage),
     });
   } catch (err: unknown) {
