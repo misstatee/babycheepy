@@ -33,15 +33,18 @@ ${userMessage}
 }
 
 export async function askGemini(faqCsv: string, userMessage: string): Promise<string> {
-  const apiKey = process.env.OPENAI_API_KEY;
-  if (!apiKey) throw new Error('OPENAI_API_KEY is not set');
+  const apiKey = process.env.GROQ_API_KEY;
+  if (!apiKey) throw new Error('GROQ_API_KEY is not set');
 
-  const client = new OpenAI({ apiKey });
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://api.groq.com/openai/v1',
+  });
 
   let completion: Awaited<ReturnType<typeof client.chat.completions.create>>;
   try {
     completion = await client.chat.completions.create({
-      model: 'gpt-4o-mini',
+      model: 'llama-3.1-8b-instant',
       messages: [{ role: 'user', content: buildPrompt(faqCsv, userMessage) }],
       max_tokens: 300,
     });
