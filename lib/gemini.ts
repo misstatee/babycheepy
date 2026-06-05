@@ -1,4 +1,4 @@
-import { GoogleGenAI } from '@google/genai';
+import OpenAI from 'openai';
 
 export const DEFAULT_REPLY =
   'รอแอดมินสักครู่นะคะ ระบบจะรีบส่งเรื่องให้ทีมดำเนินการอย่างเร็วที่สุดเลยค่ะ หรือหากต้องการคำตอบเร่งด่วนสามารถโทรมาสอบถามได้เลยนะคะ 📞';
@@ -33,37 +33,36 @@ ${userMessage}
 }
 
 export async function askGemini(faqCsv: string, userMessage: string): Promise<string> {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey) throw new Error('GEMINI_API_KEY is not set');
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) throw new Error('OPENAI_API_KEY is not set');
 
-  console.log('[Gemini] calling with key prefix:', apiKey.slice(0, 10));
+  const client = new OpenAI({ apiKey });
 
-  const ai = new GoogleGenAI({ apiKey });
-
-  let response: Awaited<ReturnType<typeof ai.models.generateContent>>;
+  let completion: Awaited<ReturnType<typeof client.chat.completions.create>>;
   try {
-    response = await ai.models.generateContent({
-      model: 'gemini-2.0-flash-lite',
-      contents: buildPrompt(faqCsv, userMessage),
+    completion = await client.chat.completions.create({
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: buildPrompt(faqCsv, userMessage) }],
+      max_tokens: 300,
     });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
-    console.error('[Gemini] API call failed:', msg);
+    console.error('[OpenAI] API call failed:', msg);
     throw err;
   }
 
-  const finishReason = response.candidates?.[0]?.finishReason;
-  const thoughtsTokenCount = response.usageMetadata?.thoughtsTokenCount ?? 0;
-  const candidatesTokenCount = response.usageMetadata?.candidatesTokenCount ?? 0;
+  const finishReason = completion.choices[0]?.finish_reason;
+  const promptTokens = completion.usage?.prompt_tokens ?? 0;
+  const completionTokens = completion.usage?.completion_tokens ?? 0;
 
   console.log(
-    `[Gemini] finishReason=${finishReason} thoughts=${thoughtsTokenCount} candidates=${candidatesTokenCount}`,
+    `[OpenAI] finishReason=${finishReason} prompt=${promptTokens} completion=${completionTokens}`,
   );
 
-  if (finishReason === 'MAX_TOKENS') {
-    console.warn('[Gemini] MAX_TOKENS hit — returning default reply');
+  if (finishReason === 'length') {
+    console.warn('[OpenAI] max_tokens hit — returning default reply');
     return DEFAULT_REPLY;
   }
 
-  return response.text ?? DEFAULT_REPLY;
+  return completion.choices[0]?.message?.content ?? DEFAULT_REPLY;
 }
