@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;1,700;1,800&display=swap');
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Prompt', sans-serif; @apply text-gray-800 bg-white; }
+}
+
+@layer components {
+  .section-title   { @apply text-4xl md:text-5xl font-extrabold leading-tight tracking-tight; }
+  .section-sub     { @apply text-base text-gray-500 mt-2 leading-relaxed; }
+
+  .btn-pink {
+    @apply inline-flex items-center gap-2 bg-brand-pink text-white font-bold
+           py-3 px-8 rounded-full shadow-md hover:bg-brand-pink-dark
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+  .btn-outline-pink {
+    @apply inline-flex items-center gap-2 border-2 border-brand-pink text-brand-pink
+           font-bold py-3 px-8 rounded-full hover:bg-brand-pink hover:text-white
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 bg-brand-pink text-white font-bold
+           py-3 px-8 rounded-full shadow-md hover:bg-brand-pink-dark
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+  .btn-white {
+    @apply inline-flex items-center gap-2 bg-white text-brand-pink font-bold
+           py-3 px-8 rounded-full shadow-md hover:shadow-lg
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 bg-pastel-pink-light text-brand-pink
+           text-xs font-bold px-3 py-1 rounded-full border border-pastel-pink;
+  }
+  .chip-blue {
+    @apply inline-flex items-center gap-1.5 bg-pastel-blue-light text-brand-blue-dark
+           text-xs font-bold px-3 py-1 rounded-full border border-pastel-blue;
+  }
+
+  .pastel-card {
+    @apply bg-white rounded-3xl p-6 shadow-sm border border-gray-100
+           hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
+  }
+
+  /* Nav dropdown */
+  .dropdown-wrap { @apply relative; }
+  .dropdown-menu {
+    @apply absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-xl border border-pink-100
+           min-w-[210px] py-2 z-50
+           opacity-0 invisible -translate-y-2 transition-all duration-150 pointer-events-none;
+  }
+  .dropdown-wrap:hover .dropdown-menu {
+    @apply opacity-100 visible translate-y-0 pointer-events-auto;
+  }
+
+  /* Image slot placeholder */
+  .img-slot {
+    @apply w-full h-full absolute inset-0 flex flex-col items-center justify-center
+           bg-gradient-to-br from-pastel-pink-light to-pastel-blue-light gap-2;
+  }
+}

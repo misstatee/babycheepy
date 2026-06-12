@@ -1,7 +1,51 @@
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const DEFAULT_REPLY =
-  'รอสักครู่นะคะ ระบบจะส่งคำถามให้แอดมินค่ะ หากไม่สะดวกรอสามารถสอบถามเบอร์โทรศัพท์เพื่อติดต่อได้เลยค่ะ 📞';
+  'ขอบคุณที่ติดต่อค่ะ ถามเรื่องสินค้า การผลิต หรือการสั่งซื้อได้เลยนะคะ 😊';
+
+function normalizeText(value: string): string {
+  return value.toLowerCase().replace(/\s+/g, ' ').trim();
+}
+
+function extractFaqAnswer(faqCsv: string, userMessage: string): string | null {
+  const input = normalizeText(userMessage);
+
+  for (const rawLine of faqCsv.split('\n')) {
+    const line = rawLine.trim();
+    if (!line || !line.includes(',')) continue;
+
+    const [question, ...answerParts] = line.split(',');
+    const answer = answerParts.join(',').trim();
+    const questionText = normalizeText(question);
+
+    if (!answer || !questionText) continue;
+
+    const score = [questionText].reduce((total, text) => {
+      if (input.includes(text)) return total + 2;
+      return total + (text.split(' ').some((word) => input.includes(word)) ? 1 : 0);
+    }, 0);
+
+    if (score >= 2) return answer;
+  }
+
+  return null;
+}
+
+function buildSimpleReply(faqCsv: string, userMessage: string): string {
+  const faqAnswer = extractFaqAnswer(faqCsv, userMessage);
+  if (faqAnswer) return faqAnswer;
+
+  const text = normalizeText(userMessage);
+  if (/สวัสดี|hello|hi|หวัด|ดีคะ|ดีครับ/.test(text)) {
+    return 'สวัสดีค่ะ มีอะไรให้ช่วยบ้างครับ/ค่ะ 😊';
+  }
+
+  if (/ราคา|จ่าย|ชำระ|ส่ง|จัดส่ง|ผลิต|ทำเสื้อ|สั่ง|สินค้า/.test(text)) {
+    return 'ขอบคุณที่สอบถามค่ะ ผม/ฉันช่วยตอบเรื่องสินค้า การผลิต และการสั่งซื้อได้เลยนะคะ';
+  }
+
+  return DEFAULT_REPLY;
+}
 
 function buildPrompt(faqCsv: string, userMessage: string): string {
   return `<role>
@@ -32,39 +76,25 @@ ${userMessage}
 }
 
 export async function askGemini(faqCsv: string, userMessage: string): Promise<string> {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) throw new Error('GROQ_API_KEY is not set');
+  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
+  if (!apiKey) {
+    return buildSimpleReply(faqCsv, userMessage);
+  }
 
-  const client = new OpenAI({
-    apiKey,
-    baseURL: 'https://api.groq.com/openai/v1',
-  });
-
-  let completion: Awaited<ReturnType<typeof client.chat.completions.create>>;
   try {
-    completion = await client.chat.completions.create({
-      model: 'llama-3.1-8b-instant',
-      messages: [{ role: 'user', content: buildPrompt(faqCsv, userMessage) }],
-      max_tokens: 300,
-    });
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    const result = await model.generateContent(buildPrompt(faqCsv, userMessage));
+    const text = result.response.text();
+
+    if (!text || !text.trim()) {
+      return DEFAULT_REPLY;
+    }
+
+    return text;
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : JSON.stringify(err);
-    console.error('[OpenAI] API call failed:', msg);
-    throw err;
+    console.error('[Gemini] API call failed:', msg);
+    return buildSimpleReply(faqCsv, userMessage);
   }
-
-  const finishReason = completion.choices[0]?.finish_reason;
-  const promptTokens = completion.usage?.prompt_tokens ?? 0;
-  const completionTokens = completion.usage?.completion_tokens ?? 0;
-
-  console.log(
-    `[OpenAI] finishReason=${finishReason} prompt=${promptTokens} completion=${completionTokens}`,
-  );
-
-  if (finishReason === 'length') {
-    console.warn('[OpenAI] max_tokens hit — returning default reply');
-    return DEFAULT_REPLY;
-  }
-
-  return completion.choices[0]?.message?.content ?? DEFAULT_REPLY;
 }
