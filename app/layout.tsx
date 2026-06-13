@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
+import { CartProvider } from './contexts/CartContext';
 
 export const metadata: Metadata = {
   title: 'Baby Cheepy | Global Apparel Kids — รับผลิตเสื้อผ้าเด็กครบวงจร',
@@ -24,7 +25,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="th">
-      <body>{children}</body>
+      <body><CartProvider>{children}</CartProvider></body>
     </html>
   );
 }
