@@ -12,9 +12,8 @@ type Lang = 'th' | 'en';
    4. ตัวเลขยาวๆ ท้าย URL คือ Video ID — copy มาวางด้านล่าง
 ──────────────────────────────────────────────────────────────────── */
 const TIKTOK_VIDEO_IDS: string[] = [
-  // 'PASTE_YOUR_VIDEO_ID_HERE',
-  // 'PASTE_YOUR_VIDEO_ID_HERE',
-  // 'PASTE_YOUR_VIDEO_ID_HERE',
+  '7320212876742921478',
+  '7389624837204937992',
 ];
 
 const PLACEHOLDER_COUNT = 3; // แสดง placeholder กี่ช่อง ถ้ายังไม่มีวิดีโอ
