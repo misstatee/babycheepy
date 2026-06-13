@@ -10,8 +10,6 @@ type Lang = 'th' | 'en';
 
 function ProductCard({ product, lang, onAdd }: { product: Product; lang: Lang; onAdd: () => void }) {
   const [imgErr, setImgErr] = useState(false);
-  const hasDiscount = product.sale_price > 0;
-  const displayPrice = hasDiscount ? product.sale_price : product.price;
   const name = lang === 'th' ? product.name_th : product.name_en;
 
   return (
@@ -26,11 +24,9 @@ function ProductCard({ product, lang, onAdd }: { product: Product; lang: Lang; o
         ) : (
           <div className="w-full h-full flex items-center justify-center text-6xl">👕</div>
         )}
-        {hasDiscount && (
-          <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-            SALE
-          </div>
-        )}
+        <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+          SALE
+        </div>
         {!product.in_stock && (
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
             <span className="bg-gray-700 text-white text-xs font-bold px-3 py-1 rounded-full">
@@ -43,18 +39,24 @@ function ProductCard({ product, lang, onAdd }: { product: Product; lang: Lang; o
       {/* Info */}
       <div className="p-4 flex flex-col flex-1">
         <div className="chip-blue text-[10px] mb-1.5">{product.category}</div>
-        <h3 className="font-bold text-gray-900 text-sm leading-snug mb-2 flex-1">{name}</h3>
-        <div className="flex items-baseline gap-2 mb-3">
-          <span className="text-lg font-extrabold text-brand-pink">{displayPrice.toLocaleString()} ฿</span>
-          {hasDiscount && (
-            <span className="text-xs text-gray-400 line-through">{product.price.toLocaleString()} ฿</span>
-          )}
+        <h3 className="font-bold text-gray-900 text-sm leading-snug mb-3 flex-1">{name}</h3>
+
+        {/* 3-tier pricing */}
+        <div className="space-y-1 mb-3">
+          <div className="flex items-center justify-between text-xs text-gray-400">
+            <span>{lang === 'th' ? 'ราคาเต็ม' : 'Full Price'}</span>
+            <span className="line-through">{product.price.toLocaleString()} ฿</span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold text-gray-600">{lang === 'th' ? 'ราคาปลีก' : 'Retail'}</span>
+            <span className="text-base font-extrabold text-brand-pink">{product.sale_price.toLocaleString()} ฿</span>
+          </div>
+          <div className="flex items-center justify-between bg-yellow-50 rounded-xl px-2 py-1">
+            <span className="text-xs font-semibold text-yellow-700">{lang === 'th' ? 'ราคาส่ง' : 'Wholesale'}</span>
+            <span className="text-base font-extrabold text-yellow-600">{product.wholesale_price.toLocaleString()} ฿</span>
+          </div>
         </div>
-        {product.min_order > 1 && (
-          <p className="text-xs text-gray-400 mb-2">
-            {lang === 'th' ? `ขั้นต่ำ ${product.min_order} ชิ้น` : `Min. ${product.min_order} pcs`}
-          </p>
-        )}
+
         <button
           onClick={onAdd}
           disabled={!product.in_stock}

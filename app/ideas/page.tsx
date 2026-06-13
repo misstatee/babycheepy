@@ -24,76 +24,82 @@ function ImageSlot({
 /* ─── Data ─── */
 const STYLES = [
   {
-    id: 'sweet-garden',
-    emoji: '🌸',
-    label: 'Sweet Garden Collection',
-    sub: 'Lovely • Sweet • Classic',
-    desc: 'คอลเลคชั่นชุดเด็กสไตล์หวาน ลายดอกไม้ เชอร์รี่ โบว์ บนผ้าลายทางสีฟ้า-ขาว มีหลายแบบ: Collar Blouse, Sailor Dress, Puff Dress, Top & Shorts Set, Romper, Gathered Skirt, Shorts — รับผลิต OEM/ODM ได้ตั้งแต่ 200 ชิ้น',
-    images: ['/images/sweet-garden.jpg', '/images/cute-3.jpg', '/images/cute-4.jpg'],
-    bg: 'bg-card-pink',
-    accent: 'text-pink-500',
-    border: 'border-pink-200',
-    tags: ['Collar Blouse', 'Sailor Dress', 'Puff Dress', 'Romper', 'ลายดอกไม้'],
-  },
-  {
-    id: 'family-sunshine',
-    emoji: '🐝',
-    label: 'Family Collection: Sunshine & Bloom',
+    id: 'family-match',
+    emoji: '👨‍👩‍👧‍👦',
+    label: 'Matching Family Collection',
+    labelTh: 'ชุดครอบครัวแมตช์',
     sub: 'แมตช์ครบ • พ่อ แม่ ลูก • สัตว์เลี้ยง',
-    desc: 'คอลเลคชั่นชุดครอบครัวแมตช์ลายผึ้ง-ดอกไม้ดาวเรือง สีฟ้าสดใส มีชุดสำหรับ Dad, Mom, Daughter, Son — ใช้ผ้าพิมพ์ลายเดียวกันทั้งครอบครัว ทำเป็นของขวัญหรือถ่ายรูปครอบครัวสวยมากค่ะ',
-    images: ['/images/family-sunshine.jpg', '/images/ผลงานที่ผ่านมา/จัดจำหน่ายในประเทศ/family-1.jpg', '/images/ผลงานที่ผ่านมา/จัดจำหน่ายในประเทศ/family-2.jpg'],
+    desc: 'คอลเลคชั่นชุดครอบครัวแมตช์ ใส่คู่กันได้ทั้งครอบครัว ลายผ้าเดียวกัน ตัดเย็บเป็นแบบสำหรับ Dad, Mom, Daughter, Son — รับผลิต OEM/ODM ได้ตั้งแต่ 200 ชิ้น',
+    main: '/images/collection/ชุดครอบครัวแมตซ์/main.png',
     bg: 'bg-card-blue',
     accent: 'text-blue-500',
     border: 'border-blue-200',
-    tags: ['Family Matching', 'พ่อ-แม่-ลูก', 'ลายผึ้ง', 'ดอกไม้', 'ของขวัญ'],
+    tags: ['Family Matching', 'พ่อ-แม่-ลูก', 'แมตช์ครบเซ็ต'],
   },
   {
-    id: 'casual',
-    emoji: '👕',
-    label: 'ODM Stock – ชุดนอน & ลำลอง',
-    sub: 'พร้อมส่ง • ปลีก-ส่ง • ทั่วไทย',
-    desc: 'ชุดนอนและชุดลำลองเนื้อผ้านุ่ม ใส่ได้ทุกวัน มีสต็อกพร้อมส่ง สั่งปลีกได้ไม่มีขั้นต่ำ หรือสั่งส่งขั้นต่ำ 12 ชิ้น/แบบ จัดส่งทั่วไทย',
-    images: ['/images/casual-1.jpg', '/images/casual-2.jpg', '/images/casual-3.jpg'],
-    bg: 'bg-card-mint',
-    accent: 'text-green-600',
-    border: 'border-green-200',
-    tags: ['ชุดนอนคอกลม', 'ลายจุด', 'ลายดาว', 'สต็อกพร้อมส่ง'],
+    id: 'cartoon',
+    emoji: '🦄',
+    label: 'Cartoon & Character Prints',
+    labelTh: 'ลายการ์ตูน & ตัวละคร',
+    sub: 'ลิขสิทธิ์ถูกต้อง หรือออกแบบมาสคอตเอง',
+    desc: 'ลายการ์ตูนที่เด็กๆ ชอบ ทั้งแบบลิขสิทธิ์ที่ถูกต้องตามกฎหมาย และการออกแบบมาสคอตของแบรนด์ลูกค้าเอง พิมพ์หรือปักบนผ้าได้หลายแบบ',
+    main: '/images/collection/ลายการ์ตูน & ตัวละคร/main.jpg',
+    bg: 'bg-card-beige',
+    accent: 'text-orange-500',
+    border: 'border-orange-200',
+    tags: ['การ์ตูน', 'มาสคอต', 'ลิขสิทธิ์', 'พิมพ์ลาย'],
+  },
+  {
+    id: 'sport-active',
+    emoji: '⚽',
+    label: 'Sport & Active Wear',
+    labelTh: 'สไตล์กีฬา & ACTIVE',
+    sub: 'ผ้ายืด ระบายอากาศ เคลื่อนไหวสะดวก',
+    desc: 'เหมาะกับเด็กที่ชอบเคลื่อนไหว ออกกำลังกาย เล่นกีฬา หรือเต้น ผ้า Dry-fit ยืดหยุ่น ดูดซับเหงื่อ ระบายอากาศดี เหมาะกับสภาพอากาศร้อนในไทย',
+    main: '/images/collection/สไตล์กีฬา & ACTIVE/main.png',
+    bg: 'bg-card-blue',
+    accent: 'text-sky-500',
+    border: 'border-sky-200',
+    tags: ['Dry-fit', 'ชุดกีฬา', 'ยืดหยุ่น', 'ระบายอากาศ'],
   },
   {
     id: 'formal',
     emoji: '🎀',
-    label: 'งานพิธี & โอกาสพิเศษ',
+    label: 'Formal Collection',
+    labelTh: 'สไตล์ทางการ',
     sub: 'งานแต่ง วันเกิด โอกาสพิเศษ',
     desc: 'ชุดสวยหรูสำหรับโอกาสพิเศษ ทำพิธี งานแต่งงาน วันเกิด มีทั้งชุดกระโปรง ชุดจั๊มสูท ตกแต่งด้วยลูกไม้ โบว์ และงานปักสวยงาม',
-    images: ['/images/ผลงานที่ผ่านมา/cat-formal.jpg', '/images/formal-3.jpg', '/images/formal-4.jpg'],
+    main: '/images/collection/สไตล์ทางการ/main.png',
     bg: 'bg-card-lavender',
     accent: 'text-purple-500',
     border: 'border-purple-200',
     tags: ['ชุดกระโปรง', 'ลูกไม้', 'งานปัก', 'โบว์', 'งานพิธี'],
   },
   {
-    id: 'cartoon',
-    emoji: '🦄',
-    label: 'ลายการ์ตูน & ตัวละคร',
-    sub: 'ลิขสิทธิ์ถูกต้อง หรือออกแบบมาสคอตเอง',
-    desc: 'ลายการ์ตูนที่เด็กๆ ชอบ ทั้งแบบลิขสิทธิ์ที่ถูกต้องตามกฎหมาย และการออกแบบมาสคอตของแบรนด์ลูกค้าเอง พิมพ์หรือปักบนผ้าได้หลายแบบ',
-    images: ['/images/cartoon-1.jpg', '/images/cartoon-2.jpg', '/images/cartoon-3.jpg'],
-    bg: 'bg-card-beige',
-    accent: 'text-orange-500',
-    border: 'border-orange-200',
-    tags: ['การ์ตูน', 'มาสคอต', 'ลิขสิทธิ์', 'พิมพ์ลาย', 'ปัก'],
+    id: 'cute',
+    emoji: '🌸',
+    label: 'Cute Collection',
+    labelTh: 'สไตล์น่ารัก',
+    sub: 'หวาน • น่ารัก • เป็นเอกลักษณ์',
+    desc: 'คอลเลคชั่นชุดเด็กสไตล์น่ารัก ลวดลายสดใส สีสันสวยงาม เหมาะกับเด็กที่ชอบความหวานและน่ารัก รับผลิต OEM/ODM ตามสั่งได้ตั้งแต่ 200 ชิ้น',
+    main: '/images/collection/สไตล์นำเทรนด์/main.jpg',
+    bg: 'bg-card-pink',
+    accent: 'text-pink-500',
+    border: 'border-pink-200',
+    tags: ['น่ารัก', 'หวาน', 'สดใส', 'เป็นเอกลักษณ์'],
   },
   {
-    id: 'sport',
-    emoji: '⚽',
-    label: 'Active & Sport',
-    sub: 'ผ้ายืด ระบายอากาศ เคลื่อนไหวสะดวก',
-    desc: 'เหมาะกับเด็กที่ชอบเคลื่อนไหว ออกกำลังกาย เล่นกีฬา หรือเต้น ผ้า Dry-fit ยืดหยุ่น ดูดซับเหงื่อ ระบายอากาศดี เหมาะกับสภาพอากาศร้อนในไทย',
-    images: ['/images/sport-1.jpg', '/images/sport-2.jpg', '/images/sport-3.jpg'],
-    bg: 'bg-card-blue',
-    accent: 'text-sky-500',
-    border: 'border-sky-200',
-    tags: ['Dry-fit', 'ชุดกีฬา', 'ยืดหยุ่น', 'ระบายอากาศ'],
+    id: 'casual',
+    emoji: '👕',
+    label: 'Casual Everyday Wear',
+    labelTh: 'สไตล์ลำลอง',
+    sub: 'ใส่สบาย • ทนทาน • ทุกวัน',
+    desc: 'ชุดลำลองเนื้อผ้านุ่ม ใส่ได้ทุกวัน เหมาะกับสภาพอากาศร้อนในไทย สวมถอดง่าย เคลื่อนไหวสะดวก ไม่จำกัดการเล่นของเด็ก',
+    main: '/images/collection/สไตล์ลำลอง/main.png',
+    bg: 'bg-card-mint',
+    accent: 'text-green-600',
+    border: 'border-green-200',
+    tags: ['ลำลอง', 'ทุกวัน', 'สบาย', 'ทนทาน'],
   },
 ];
 
@@ -252,18 +258,19 @@ export default function IdeasPage() {
                 onClick={() => setActiveStyle(activeStyle === style.id ? null : style.id)}
                 className={`text-left rounded-3xl border-2 overflow-hidden transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${style.bg} ${activeStyle === style.id ? `${style.border} shadow-lg scale-[1.01]` : 'border-transparent'}`}
               >
-                {/* Image strip */}
-                <div className="grid grid-cols-3 h-32">
-                  {style.images.map((img, i) => (
-                    <ImageSlot key={i} src={img} alt={`${style.label} ${i + 1}`}
-                      className="h-full" hint={style.label} emoji={style.emoji} />
-                  ))}
+                {/* Main image */}
+                <div className="h-44">
+                  <ImageSlot src={style.main} alt={style.label}
+                    className="h-full" hint={style.label} emoji={style.emoji} />
                 </div>
                 {/* Info */}
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-1">
                     <span className="text-2xl">{style.emoji}</span>
-                    <h3 className={`font-extrabold text-lg ${style.accent}`}>{style.label}</h3>
+                    <div>
+                      <h3 className={`font-extrabold text-base leading-tight ${style.accent}`}>{style.labelTh}</h3>
+                      <p className="text-xs text-gray-400 font-medium">{style.label}</p>
+                    </div>
                   </div>
                   <p className="text-xs text-gray-500 mb-2">{style.sub}</p>
                   {activeStyle === style.id && (
