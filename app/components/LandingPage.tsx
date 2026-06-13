@@ -562,14 +562,13 @@ export default function LandingPage() {
             {/* Photo grid */}
             <div className="grid grid-cols-2 gap-3">
               <div className="col-span-2 rounded-3xl overflow-hidden h-52 shadow-md">
-                <img src="/images/เกี่ยวกับเรา/476235651_953918760171275_8800649008140700131_n.jpg"
+                <img src="/images/about.png"
                   alt="Baby Cheepy โรงงาน" className="w-full h-full object-cover" />
               </div>
               {([
-                '/images/เกี่ยวกับเรา/476465308_953918730171278_189185475316569439_n.jpg',
-                '/images/เกี่ยวกับเรา/476351157_953918556837962_7127138829152919994_n.jpg',
-                '/images/เกี่ยวกับเรา/476834212_953918613504623_2142445742008254826_n.jpg',
-                '/images/เกี่ยวกับเรา/476601973_953918506837967_6489795825891377143_n.jpg',
+                '/images/about-1.png',
+                '/images/about-2.png',
+                '/images/about-3.png',
               ] as string[]).map((src, i) => (
                 <div key={i} className="rounded-2xl overflow-hidden h-36 shadow-sm">
                   <img src={src} alt="Baby Cheepy" className="w-full h-full object-cover" />
