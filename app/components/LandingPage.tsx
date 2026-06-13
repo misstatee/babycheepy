@@ -512,8 +512,77 @@ export default function LandingPage() {
       {/* ══ TIKTOK ══ */}
       <TikTokSection lang={lang} />
 
-      {/* ══ TRUST / WHY US ══ */}
+      {/* ══ เกี่ยวกับเรา ══ */}
       <section id="about" className="py-16 bg-white">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+
+            {/* Text */}
+            <div>
+              <div className="chip mb-4">{lang === 'th' ? '🐣 เกี่ยวกับเรา' : '🐣 About Us'}</div>
+              <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 leading-tight mb-6">
+                {lang === 'th'
+                  ? <>{`จากรุ่นแม่`}<span className="text-coral">{`สู่รุ่นลูก`}</span></>
+                  : <>From Generation <span className="text-coral">to Generation</span></>}
+              </h2>
+              <div className="space-y-4 text-gray-600 leading-relaxed text-[15px]">
+                <p>
+                  {lang === 'th'
+                    ? 'เราสืบทอดประสบการณ์กว่า 40 ปีในวงการเสื้อผ้าเด็ก ด้วยความเชื่อว่าทุกแบรนด์ที่ดี ควรเริ่มต้นจากผู้ผลิตที่เข้าใจ'
+                    : "We carry forward 40+ years of expertise in children's apparel, built on the belief that every great brand starts with a manufacturer that truly understands."}
+                </p>
+                <p>
+                  {lang === 'th'
+                    ? 'เราดูแลทุกขั้นตอนตั้งแต่การออกแบบ การเลือกผ้า การผลิต ไปจนถึงการให้คำปรึกษาด้านการสร้างแบรนด์และการตลาด เพื่อให้ลูกค้าสามารถเปลี่ยนไอเดียให้กลายเป็นสินค้าที่พร้อมเติบโตในตลาดได้อย่างมั่นใจ'
+                    : 'We handle everything — from design and fabric selection to manufacturing and brand consulting — so you can turn your ideas into market-ready products with confidence.'}
+                </p>
+                <p className="font-bold text-coral text-base">
+                  {lang === 'th'
+                    ? 'เพราะความสำเร็จของลูกค้า คือความภาคภูมิใจของเราเสมอ'
+                    : 'Because your success is always our pride.'}
+                </p>
+              </div>
+              <div className="flex flex-wrap gap-3 mt-8">
+                {([
+                  { icon: '🏭', label: lang === 'th' ? '40+ ปี' : '40+ Years', sub: lang === 'th' ? 'ประสบการณ์' : 'Experience' },
+                  { icon: '🌍', label: lang === 'th' ? 'ส่งออก' : 'Export', sub: lang === 'th' ? 'หลายประเทศ' : 'Worldwide' },
+                  { icon: '✂️', label: 'OEM / ODM', sub: lang === 'th' ? 'ครบวงจร' : 'Full Service' },
+                ] as { icon: string; label: string; sub: string }[]).map((b, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-cream rounded-2xl px-4 py-3 border border-orange-100">
+                    <span className="text-2xl">{b.icon}</span>
+                    <div>
+                      <div className="font-extrabold text-gray-900 text-sm">{b.label}</div>
+                      <div className="text-xs text-gray-500">{b.sub}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Photo grid */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="col-span-2 rounded-3xl overflow-hidden h-52 shadow-md">
+                <img src="/images/เกี่ยวกับเรา/476235651_953918760171275_8800649008140700131_n.jpg"
+                  alt="Baby Cheepy โรงงาน" className="w-full h-full object-cover" />
+              </div>
+              {([
+                '/images/เกี่ยวกับเรา/476465308_953918730171278_189185475316569439_n.jpg',
+                '/images/เกี่ยวกับเรา/476351157_953918556837962_7127138829152919994_n.jpg',
+                '/images/เกี่ยวกับเรา/476834212_953918613504623_2142445742008254826_n.jpg',
+                '/images/เกี่ยวกับเรา/476601973_953918506837967_6489795825891377143_n.jpg',
+              ] as string[]).map((src, i) => (
+                <div key={i} className="rounded-2xl overflow-hidden h-36 shadow-sm">
+                  <img src={src} alt="Baby Cheepy" className="w-full h-full object-cover" />
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ══ TRUST / WHY US ══ */}
+      <section className="py-16 bg-white border-t border-orange-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl font-extrabold text-gray-900 text-center mb-10">{t.trust.title}</h2>
           <div className="grid lg:grid-cols-5 gap-6">
