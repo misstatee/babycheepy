@@ -86,13 +86,12 @@ const i18n = {
       { icon: '💬', t: 'บริการหลังการขาย',     s: 'ดูแลตลอดการผลิต' },
     ],
     categories: {
-      title: 'สินค้าของเรา',
+      title: 'ตัวอย่างผลงาน',
       items: [
-        { label: 'เสื้อผ้าเด็กทารก',    sub: 'ไซส์ 0-24 เดือน',       image: '/images/cat-baby.jpg',    bg: 'bg-card-beige',    emoji: '👶' },
-        { label: 'ชุดเด็กหญิง',          sub: 'น่ารัก สดใส',           image: '/images/cat-kids.jpg',    bg: 'bg-card-pink',     emoji: '👗' },
-        { label: 'ชุดครอบครัว',          sub: 'แมตช์ครบเซ็ต',          image: '/images/cat-family.jpg',  bg: 'bg-card-blue',     emoji: '👨‍👩‍👧' },
-        { label: 'ชุดสัตว์เลี้ยง',      sub: 'หมา แมว แรบบิท',        image: '/images/cat-pets.jpg',    bg: 'bg-card-mint',     emoji: '🐾' },
-        { label: 'Accessories',           sub: 'หมวก ผ้ากันเปื้อน ฯลฯ', image: '/images/cat-accessories.jpg', bg: 'bg-card-lavender', emoji: '🎩' },
+        { label: 'ชุดงานสั่งผลิตแบรนด์',       sub: 'OEM/ODM Custom Brand',        image: '/images/ตัวอย่างผลงาน/ชุดงานสั่งผลิตแบรนด์/mainn.png',        bg: 'bg-card-beige',    emoji: '👗' },
+        { label: 'ชุดว่ายน้ำ',                  sub: 'Swimwear Collection',          image: '/images/ตัวอย่างผลงาน/ชุดว่ายน้ำ/mainn.png',                  bg: 'bg-card-blue',     emoji: '🏊' },
+        { label: 'ชุดสัตว์เลี้ยง',              sub: 'Pet Outfit Collection',        image: '/images/ตัวอย่างผลงาน/ชุดสัตว์เลี้ยง/mainn.png',              bg: 'bg-card-mint',     emoji: '🐾' },
+        { label: 'เครื่องประดับและของตกแต่ง',   sub: 'Accessories & Decoration',    image: '/images/ตัวอย่างผลงาน/เครื่องประดับและของตกแต่ง/mainn.png',   bg: 'bg-card-lavender', emoji: '✨' },
       ],
     },
     trust: {
@@ -185,13 +184,12 @@ const i18n = {
       { icon: '💬', t: 'After-sales',     s: 'Full production support' },
     ],
     categories: {
-      title: 'Our Products',
+      title: 'Portfolio',
       items: [
-        { label: 'Baby Clothing',    sub: 'Size 0-24 months',     image: '/images/cat-baby.jpg',        bg: 'bg-card-beige',    emoji: '👶' },
-        { label: "Girls' Wear",     sub: 'Cute & Colorful',      image: '/images/cat-kids.jpg',        bg: 'bg-card-pink',     emoji: '👗' },
-        { label: 'Family Matching', sub: 'Full matching sets',    image: '/images/cat-family.jpg',      bg: 'bg-card-blue',     emoji: '👨‍👩‍👧' },
-        { label: 'Pet Outfits',     sub: 'Dog, Cat, Rabbit',      image: '/images/cat-pets.jpg',        bg: 'bg-card-mint',     emoji: '🐾' },
-        { label: 'Accessories',     sub: 'Hats, bibs & more',    image: '/images/cat-accessories.jpg', bg: 'bg-card-lavender', emoji: '🎩' },
+        { label: 'Custom Brand OEM/ODM',      sub: 'Branded Production',        image: '/images/ตัวอย่างผลงาน/ชุดงานสั่งผลิตแบรนด์/mainn.png',        bg: 'bg-card-beige',    emoji: '👗' },
+        { label: 'Swimwear',                  sub: 'Swimwear Collection',       image: '/images/ตัวอย่างผลงาน/ชุดว่ายน้ำ/mainn.png',                  bg: 'bg-card-blue',     emoji: '🏊' },
+        { label: 'Pet Outfits',               sub: 'Pet Outfit Collection',     image: '/images/ตัวอย่างผลงาน/ชุดสัตว์เลี้ยง/mainn.png',              bg: 'bg-card-mint',     emoji: '🐾' },
+        { label: 'Accessories & Decoration',  sub: 'Accessories & Decoration',  image: '/images/ตัวอย่างผลงาน/เครื่องประดับและของตกแต่ง/mainn.png',   bg: 'bg-card-lavender', emoji: '✨' },
       ],
     },
     trust: {
@@ -430,37 +428,36 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ══ STOCK PRODUCTS ══ */}
+      {/* ══ PORTFOLIO ══ */}
       <section id="portfolio" className="py-16 bg-cream">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-8">
-            <div className="chip mb-3">🏪 {lang === 'th' ? 'สินค้าพร้อมส่ง' : 'Ready Stock'}</div>
+            <div className="chip mb-3">🏆 {lang === 'th' ? 'ตัวอย่างผลงาน' : 'Our Portfolio'}</div>
             <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
-              {lang === 'th' ? 'สินค้าสต็อกพร้อมส่ง' : 'Ready-to-Ship Stock'}
+              {lang === 'th' ? 'ตัวอย่างผลงาน' : 'Portfolio'}
             </h2>
             <p className="text-gray-500 text-sm max-w-lg mx-auto">
               {lang === 'th'
-                ? 'สั่งได้ทั้งแบบปลีกและขายส่ง ราคาโรงงาน จัดส่งทั่วไทย'
-                : 'Available for retail & wholesale — factory pricing, nationwide delivery'}
+                ? 'ผลงานจริงจากโรงงานของเรา — ออกแบบและผลิตโดยทีมงานมืออาชีพ'
+                : 'Real work from our factory — designed and manufactured by our expert team'}
             </p>
-            {/* Retail / Wholesale toggle chips */}
             <div className="flex justify-center gap-3 mt-4">
-              <a href="/shop" className="flex items-center gap-2 bg-coral text-white text-sm font-bold px-5 py-2 rounded-full shadow hover:bg-coral-dark transition-colors">
-                🛍️ {lang === 'th' ? 'สั่งปลีก' : 'Retail Order'}
+              <a href="/ideas" className="flex items-center gap-2 bg-coral text-white text-sm font-bold px-5 py-2 rounded-full shadow hover:bg-coral-dark transition-colors">
+                ✨ {lang === 'th' ? 'ดูไอเดียทั้งหมด' : 'View All Ideas'}
               </a>
               <a href="#quote" className="flex items-center gap-2 bg-white border-2 border-coral text-coral text-sm font-bold px-5 py-2 rounded-full hover:bg-coral hover:text-white transition-colors">
-                📦 {lang === 'th' ? 'สั่งขายส่ง' : 'Wholesale Order'}
+                📋 {lang === 'th' ? 'ขอใบเสนอราคา' : 'Get a Quote'}
               </a>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {t.categories.items.map((cat, i) => (
               <div key={i} className={`group ${cat.bg} rounded-3xl p-4 flex flex-col items-start gap-3 border border-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
-                <a href="/shop" className="w-full">
+                <a href="/ideas" className="w-full">
                   <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-white/60 shadow-sm">
                     <ImageSlot src={cat.image} alt={cat.label}
-                      hint={cat.image.replace('/images/', 'public/images/')}
+                      hint={cat.image}
                       emoji={cat.emoji} />
                   </div>
                 </a>
@@ -468,13 +465,13 @@ export default function LandingPage() {
                   <div className="font-extrabold text-gray-900 text-sm">{cat.label}</div>
                   <div className="text-xs text-gray-500 mb-3">{cat.sub}</div>
                   <div className="flex gap-1.5 flex-wrap">
-                    <a href="/shop"
+                    <a href="/ideas"
                       className="flex-1 text-center text-xs font-bold text-coral border border-coral rounded-full px-2 py-1.5 group-hover:bg-coral group-hover:text-white transition-colors">
-                      🛍️ {lang === 'th' ? 'ปลีก' : 'Retail'}
+                      ✨ {lang === 'th' ? 'ดูผลงาน' : 'View Work'}
                     </a>
                     <a href="#quote"
                       className="flex-1 text-center text-xs font-bold text-gray-600 border border-gray-300 rounded-full px-2 py-1.5 hover:bg-gray-700 hover:text-white transition-colors">
-                      📦 {lang === 'th' ? 'ส่ง' : 'Wholesale'}
+                      📋 {lang === 'th' ? 'สั่งผลิต' : 'Order'}
                     </a>
                   </div>
                 </div>
