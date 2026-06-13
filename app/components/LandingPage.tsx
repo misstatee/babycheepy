@@ -53,7 +53,7 @@ const i18n = {
     phone: '02-XXX-XXXX',
     nav: {
       home: 'หน้าแรก', about: 'เกี่ยวกับเรา', services: 'บริการของเรา',
-      shop: 'สินค้า', ideas: 'ไอเดีย ✨', portfolio: 'ผลงานของเรา', contact: 'ติดต่อเรา',
+      shop: 'สินค้า', ideas: 'ไอเดีย ✨', portfolio: 'ผลงานของเรา', contact: 'ติดต่อเรา', location: '📍 โลเคชั่น',
       quote: 'ขอใบเสนอราคา', lineId: '@861pkbnz',
       serviceItems: [
         { label: 'รับผลิต OEM / ODM',         href: '#services' },
@@ -151,7 +151,7 @@ const i18n = {
     phone: '02-XXX-XXXX',
     nav: {
       home: 'Home', about: 'About', services: 'Services',
-      shop: 'Shop', ideas: 'Ideas ✨', portfolio: 'Portfolio', contact: 'Contact',
+      shop: 'Shop', ideas: 'Ideas ✨', portfolio: 'Portfolio', contact: 'Contact', location: '📍 Location',
       quote: 'Get Quote', lineId: '@861pkbnz',
       serviceItems: [
         { label: 'OEM / ODM Production',    href: '#services' },
@@ -286,6 +286,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           <a href="/ideas"     className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.ideas}</a>
           <a href="#portfolio" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.portfolio}</a>
           <a href="#contact"   className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.contact}</a>
+          <a href="/location"  className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.location}</a>
         </div>
 
         {/* Right CTAs */}
@@ -323,7 +324,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
       {/* Mobile menu */}
       {open && (
         <div className="lg:hidden bg-white border-t border-orange-100 px-4 pb-4 space-y-1 text-sm font-semibold">
-          {([['#hero', t.nav.home], ['#about', t.nav.about], ['/shop', t.nav.shop], ['/ideas', t.nav.ideas], ['#portfolio', t.nav.portfolio], ['#contact', t.nav.contact]] as [string, string][]).map(([href, label]) => (
+          {([['#hero', t.nav.home], ['#about', t.nav.about], ['/shop', t.nav.shop], ['/ideas', t.nav.ideas], ['#portfolio', t.nav.portfolio], ['#contact', t.nav.contact], ['/location', t.nav.location]] as [string, string][]).map(([href, label]) => (
             <a key={href} href={href} onClick={() => setOpen(false)}
               className="block px-3 py-2 rounded-xl hover:bg-coral-light text-gray-700">{label}</a>
           ))}
