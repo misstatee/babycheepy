@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Image from 'next/image';
 import QuoteForm from './QuoteForm';
 import TikTokSection from './TikTokSection';
 
@@ -35,17 +34,14 @@ function ImageSlot({ src, alt, className, hint, emoji = '📸' }: {
 }) {
   const [err, setErr] = useState(false);
   return (
-    <div className={`relative overflow-hidden ${className ?? ''}`}>
-      {!err && (
-        <Image src={src} alt={alt} fill className="object-cover"
-          onError={() => setErr(true)} />
-      )}
-      {err && (
-        <div className="img-slot text-center px-4">
-          <span className="text-5xl mb-2">{emoji}</span>
-          <p className="text-xs text-gray-400 font-medium">{hint ?? src}</p>
-        </div>
-      )}
+    <div className={`absolute inset-0 overflow-hidden ${className ?? ''}`}>
+      {!err
+        ? <img src={src} alt={alt} className="w-full h-full object-cover" onError={() => setErr(true)} />
+        : <div className="img-slot text-center px-4">
+            <span className="text-5xl mb-2">{emoji}</span>
+            <p className="text-xs text-gray-400 font-medium">{hint ?? src}</p>
+          </div>
+      }
     </div>
   );
 }
@@ -57,7 +53,7 @@ const i18n = {
     phone: '02-XXX-XXXX',
     nav: {
       home: 'หน้าแรก', about: 'เกี่ยวกับเรา', services: 'บริการของเรา',
-      shop: 'สินค้า', portfolio: 'ผลงานของเรา', contact: 'ติดต่อเรา',
+      shop: 'สินค้า', ideas: 'ไอเดีย ✨', portfolio: 'ผลงานของเรา', contact: 'ติดต่อเรา',
       quote: 'ขอใบเสนอราคา', lineId: '@861pkbnz',
       serviceItems: [
         { label: 'รับผลิต OEM / ODM',         href: '#services' },
@@ -156,7 +152,7 @@ const i18n = {
     phone: '02-XXX-XXXX',
     nav: {
       home: 'Home', about: 'About', services: 'Services',
-      shop: 'Shop', portfolio: 'Portfolio', contact: 'Contact',
+      shop: 'Shop', ideas: 'Ideas ✨', portfolio: 'Portfolio', contact: 'Contact',
       quote: 'Get Quote', lineId: '@861pkbnz',
       serviceItems: [
         { label: 'OEM / ODM Production',    href: '#services' },
@@ -256,14 +252,9 @@ const i18n = {
 function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
   const t = i18n[lang];
   const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  if (typeof window !== 'undefined') {
-    // handled via useEffect below
-  }
 
   return (
-    <nav className={`fixed top-0 inset-x-0 z-50 transition-all duration-200 bg-white border-b border-orange-100 ${scrolled ? 'shadow-md' : ''}`}>
+    <nav className="fixed top-0 inset-x-0 z-50 transition-all duration-200 bg-white border-b border-orange-100 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
         {/* Logo */}
         <a href="#hero" className="flex items-center gap-2 shrink-0">
@@ -294,6 +285,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
             </div>
           </div>
           <a href="/shop"      className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.shop}</a>
+          <a href="/ideas"     className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.ideas}</a>
           <a href="#portfolio" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.portfolio}</a>
           <a href="#contact"   className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.contact}</a>
         </div>
@@ -333,7 +325,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
       {/* Mobile menu */}
       {open && (
         <div className="lg:hidden bg-white border-t border-orange-100 px-4 pb-4 space-y-1 text-sm font-semibold">
-          {([['#hero', t.nav.home], ['#about', t.nav.about], ['/shop', t.nav.shop], ['#portfolio', t.nav.portfolio], ['#contact', t.nav.contact]] as [string, string][]).map(([href, label]) => (
+          {([['#hero', t.nav.home], ['#about', t.nav.about], ['/shop', t.nav.shop], ['/ideas', t.nav.ideas], ['#portfolio', t.nav.portfolio], ['#contact', t.nav.contact]] as [string, string][]).map(([href, label]) => (
             <a key={href} href={href} onClick={() => setOpen(false)}
               className="block px-3 py-2 rounded-xl hover:bg-coral-light text-gray-700">{label}</a>
           ))}
