@@ -6,20 +6,38 @@
 
 @layer base {
   html { scroll-behavior: smooth; }
-  body { font-family: 'Prompt', sans-serif; @apply text-gray-800 bg-white; }
+  body { font-family: 'Prompt', sans-serif; @apply text-gray-800 bg-cream; }
 }
 
 @layer components {
-  .section-title   { @apply text-4xl md:text-5xl font-extrabold leading-tight tracking-tight; }
-  .section-sub     { @apply text-base text-gray-500 mt-2 leading-relaxed; }
+  /* ── Typography ── */
+  .section-title { @apply text-3xl md:text-4xl font-extrabold leading-tight tracking-tight; }
+  .section-sub   { @apply text-base text-gray-500 mt-2 leading-relaxed; }
 
+  /* ── Buttons ── */
+  .btn-coral {
+    @apply inline-flex items-center justify-center gap-2 bg-coral text-white font-bold
+           py-3 px-7 rounded-full shadow-md hover:bg-coral-dark
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+  .btn-outline-coral {
+    @apply inline-flex items-center justify-center gap-2 border-2 border-coral text-coral
+           font-bold py-3 px-7 rounded-full hover:bg-coral hover:text-white
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+  .btn-line {
+    @apply inline-flex items-center justify-center gap-2 bg-[#06C755] text-white
+           font-bold py-3 px-6 rounded-full shadow-md hover:opacity-90
+           active:scale-95 transition-all duration-150 cursor-pointer;
+  }
+  /* kept for shop/checkout/quoteform */
   .btn-pink {
-    @apply inline-flex items-center gap-2 bg-brand-pink text-white font-bold
+    @apply inline-flex items-center justify-center gap-2 bg-brand-pink text-white font-bold
            py-3 px-8 rounded-full shadow-md hover:bg-brand-pink-dark
            active:scale-95 transition-all duration-150 cursor-pointer;
   }
   .btn-outline-pink {
-    @apply inline-flex items-center gap-2 border-2 border-brand-pink text-brand-pink
+    @apply inline-flex items-center justify-center gap-2 border-2 border-brand-pink text-brand-pink
            font-bold py-3 px-8 rounded-full hover:bg-brand-pink hover:text-white
            active:scale-95 transition-all duration-150 cursor-pointer;
   }
@@ -29,29 +47,39 @@
            active:scale-95 transition-all duration-150 cursor-pointer;
   }
   .btn-white {
-    @apply inline-flex items-center gap-2 bg-white text-brand-pink font-bold
+    @apply inline-flex items-center justify-center gap-2 bg-white text-coral font-bold
            py-3 px-8 rounded-full shadow-md hover:shadow-lg
            active:scale-95 transition-all duration-150 cursor-pointer;
   }
 
+  /* ── Chips ── */
   .chip {
-    @apply inline-flex items-center gap-1.5 bg-pastel-pink-light text-brand-pink
-           text-xs font-bold px-3 py-1 rounded-full border border-pastel-pink;
+    @apply inline-flex items-center gap-1.5 bg-coral-light text-coral
+           text-xs font-bold px-3 py-1 rounded-full border border-coral-muted;
   }
   .chip-blue {
     @apply inline-flex items-center gap-1.5 bg-pastel-blue-light text-brand-blue-dark
            text-xs font-bold px-3 py-1 rounded-full border border-pastel-blue;
   }
+  .chip-green {
+    @apply inline-flex items-center gap-1.5 bg-card-mint text-green-700
+           text-xs font-bold px-3 py-1 rounded-full border border-green-200;
+  }
 
+  /* ── Cards ── */
   .pastel-card {
     @apply bg-white rounded-3xl p-6 shadow-sm border border-gray-100
            hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
   }
+  .cream-card {
+    @apply bg-white rounded-3xl p-6 shadow-sm border border-orange-100
+           hover:shadow-md hover:-translate-y-0.5 transition-all duration-200;
+  }
 
-  /* Nav dropdown */
+  /* ── Nav dropdown ── */
   .dropdown-wrap { @apply relative; }
   .dropdown-menu {
-    @apply absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-xl border border-pink-100
+    @apply absolute top-full left-0 mt-2 bg-white rounded-2xl shadow-xl border border-orange-100
            min-w-[210px] py-2 z-50
            opacity-0 invisible -translate-y-2 transition-all duration-150 pointer-events-none;
   }
@@ -59,9 +87,9 @@
     @apply opacity-100 visible translate-y-0 pointer-events-auto;
   }
 
-  /* Image slot placeholder */
+  /* ── Image placeholder ── */
   .img-slot {
     @apply w-full h-full absolute inset-0 flex flex-col items-center justify-center
-           bg-gradient-to-br from-pastel-pink-light to-pastel-blue-light gap-2;
+           bg-gradient-to-br from-cream to-cream-mid gap-2;
   }
 }
