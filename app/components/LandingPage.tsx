@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import QuoteForm from './QuoteForm';
+import TikTokSection from './TikTokSection';
 
 type Lang = 'th' | 'en';
 
@@ -465,6 +466,9 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* ══ TIKTOK ══ */}
+      <TikTokSection lang={lang} />
 
       {/* ══ TRUST / WHY US ══ */}
       <section id="about" className="py-16 bg-white">
