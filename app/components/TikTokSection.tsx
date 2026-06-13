@@ -14,6 +14,7 @@ type Lang = 'th' | 'en';
 const TIKTOK_VIDEO_IDS: string[] = [
   '7320212876742921478',
   '7389624837204937992',
+  '7560311181651610898',
 ];
 
 const PLACEHOLDER_COUNT = 3; // แสดง placeholder กี่ช่อง ถ้ายังไม่มีวิดีโอ
