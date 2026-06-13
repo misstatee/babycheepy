@@ -438,31 +438,81 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ══ PRODUCT CATEGORIES ══ */}
+      {/* ══ STOCK PRODUCTS ══ */}
       <section id="portfolio" className="py-16 bg-cream">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center gap-2 justify-center mb-8">
-            <h2 className="text-3xl font-extrabold text-gray-900">{t.categories.title}</h2>
-            <span className="text-2xl">❤️</span>
+          <div className="text-center mb-8">
+            <div className="chip mb-3">🏪 {lang === 'th' ? 'สินค้าพร้อมส่ง' : 'Ready Stock'}</div>
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-2">
+              {lang === 'th' ? 'สินค้าสต็อกพร้อมส่ง' : 'Ready-to-Ship Stock'}
+            </h2>
+            <p className="text-gray-500 text-sm max-w-lg mx-auto">
+              {lang === 'th'
+                ? 'สั่งได้ทั้งแบบปลีกและขายส่ง ราคาโรงงาน จัดส่งทั่วไทย'
+                : 'Available for retail & wholesale — factory pricing, nationwide delivery'}
+            </p>
+            {/* Retail / Wholesale toggle chips */}
+            <div className="flex justify-center gap-3 mt-4">
+              <a href="/shop" className="flex items-center gap-2 bg-coral text-white text-sm font-bold px-5 py-2 rounded-full shadow hover:bg-coral-dark transition-colors">
+                🛍️ {lang === 'th' ? 'สั่งปลีก' : 'Retail Order'}
+              </a>
+              <a href="#quote" className="flex items-center gap-2 bg-white border-2 border-coral text-coral text-sm font-bold px-5 py-2 rounded-full hover:bg-coral hover:text-white transition-colors">
+                📦 {lang === 'th' ? 'สั่งขายส่ง' : 'Wholesale Order'}
+              </a>
+            </div>
           </div>
+
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {t.categories.items.map((cat, i) => (
-              <a key={i} href="/shop"
-                className={`group ${cat.bg} rounded-3xl p-4 flex flex-col items-start gap-3 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 border border-white`}>
-                <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-white/60 shadow-sm">
-                  <ImageSlot src={cat.image} alt={cat.label}
-                    hint={cat.image.replace('/images/', 'public/images/')}
-                    emoji={cat.emoji} />
-                </div>
-                <div>
+              <div key={i} className={`group ${cat.bg} rounded-3xl p-4 flex flex-col items-start gap-3 border border-white hover:shadow-lg hover:-translate-y-1 transition-all duration-200`}>
+                <a href="/shop" className="w-full">
+                  <div className="relative w-full aspect-square rounded-2xl overflow-hidden bg-white/60 shadow-sm">
+                    <ImageSlot src={cat.image} alt={cat.label}
+                      hint={cat.image.replace('/images/', 'public/images/')}
+                      emoji={cat.emoji} />
+                  </div>
+                </a>
+                <div className="w-full">
                   <div className="font-extrabold text-gray-900 text-sm">{cat.label}</div>
-                  <div className="text-xs text-gray-500 mb-2">{cat.sub}</div>
-                  <span className="inline-flex items-center gap-1 text-xs font-bold text-coral border border-coral rounded-full px-3 py-1 group-hover:bg-coral group-hover:text-white transition-colors">
-                    {lang === 'th' ? 'ดูสินค้า' : 'View'} →
-                  </span>
+                  <div className="text-xs text-gray-500 mb-3">{cat.sub}</div>
+                  <div className="flex gap-1.5 flex-wrap">
+                    <a href="/shop"
+                      className="flex-1 text-center text-xs font-bold text-coral border border-coral rounded-full px-2 py-1.5 group-hover:bg-coral group-hover:text-white transition-colors">
+                      🛍️ {lang === 'th' ? 'ปลีก' : 'Retail'}
+                    </a>
+                    <a href="#quote"
+                      className="flex-1 text-center text-xs font-bold text-gray-600 border border-gray-300 rounded-full px-2 py-1.5 hover:bg-gray-700 hover:text-white transition-colors">
+                      📦 {lang === 'th' ? 'ส่ง' : 'Wholesale'}
+                    </a>
+                  </div>
                 </div>
-              </a>
+              </div>
             ))}
+          </div>
+
+          {/* Mini service link bar */}
+          <div className="mt-8 bg-white rounded-3xl border border-orange-100 p-5 flex flex-wrap items-center gap-3 justify-between shadow-sm">
+            <p className="font-bold text-gray-700 text-sm">
+              🏭 {lang === 'th' ? 'ต้องการผลิตเอง? ดูบริการ OEM/ODM ของเรา:' : 'Need custom production? See our OEM/ODM services:'}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {[
+                { label: lang === 'th' ? 'OEM/ODM' : 'OEM/ODM',          href: '/services#oem-odm' },
+                { label: lang === 'th' ? 'งานปัก' : 'Embroidery',         href: '/services#embroidery' },
+                { label: lang === 'th' ? 'สกรีน' : 'Screen Print',        href: '/services#screen-print' },
+                { label: lang === 'th' ? 'พิมพ์ลายผ้า' : 'Fabric Print',  href: '/services#fabric-print' },
+                { label: lang === 'th' ? 'สม้อค' : 'Smocking',            href: '/services#smocking' },
+                { label: lang === 'th' ? 'ส่งออก' : 'Export',             href: '/services#export' },
+              ].map((s, i) => (
+                <a key={i} href={s.href}
+                  className="text-xs font-bold text-coral border border-coral/40 bg-coral-light rounded-full px-3 py-1 hover:bg-coral hover:text-white transition-colors">
+                  {s.label}
+                </a>
+              ))}
+              <a href="/services" className="text-xs font-bold text-white bg-coral rounded-full px-3 py-1 hover:bg-coral-dark transition-colors">
+                {lang === 'th' ? 'ดูทั้งหมด →' : 'View All →'}
+              </a>
+            </div>
           </div>
         </div>
       </section>
