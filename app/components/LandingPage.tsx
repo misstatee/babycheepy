@@ -395,7 +395,7 @@ export default function LandingPage() {
               {/* Right — hero image */}
               <div className="relative flex justify-center">
                 <div className="relative w-full max-w-md aspect-[4/3] rounded-4xl overflow-hidden shadow-2xl ring-4 ring-white ring-offset-4 ring-offset-cream">
-                  <ImageSlot src="/images/hero.jpg" alt="Baby Cheepy Products"
+                  <ImageSlot src="/images/hero.png" alt="Baby Cheepy Products"
                     hint={lang === 'th' ? 'วางรูปสินค้าหรือรูปเด็กสวมเสื้อผ้า (1200×900px)' : 'Place children product photo here'}
                     emoji="👶" />
                 </div>
