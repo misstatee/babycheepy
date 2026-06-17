@@ -1,3 +1,4 @@
+import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 
 export const DEFAULT_REPLY =
@@ -77,25 +78,50 @@ ${userMessage}
 }
 
 export async function askGemini(faqCsv: string, userMessage: string): Promise<string> {
-  const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
-  if (!apiKey) {
-    return buildSimpleReply(faqCsv, userMessage);
-  }
+  const groqKey = process.env.GROQ_API_KEY;
+  const geminiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
 
-  try {
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-    const result = await model.generateContent(buildPrompt(faqCsv, userMessage));
-    const text = result.response.text();
+  // ใช้ Groq ถ้ามี key
+  if (groqKey) {
+    try {
+      const client = new OpenAI({
+        apiKey: groqKey,
+        baseURL: 'https://api.groq.com/openai/v1',
+      });
 
-    if (!text || !text.trim()) {
-      return DEFAULT_REPLY;
+      const completion = await client.chat.completions.create({
+        model: 'llama-3.3-70b-versatile',
+        messages: [{ role: 'user', content: buildPrompt(faqCsv, userMessage) }],
+        max_tokens: 300,
+        temperature: 0.3,
+      });
+
+      const text = completion.choices[0]?.message?.content;
+      if (!text || !text.trim()) return DEFAULT_REPLY;
+      return text.trim();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : JSON.stringify(err);
+      console.error('[Groq] API call failed:', msg);
+      return buildSimpleReply(faqCsv, userMessage);
     }
-
-    return text;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : JSON.stringify(err);
-    console.error('[Gemini] API call failed:', msg);
-    return buildSimpleReply(faqCsv, userMessage);
   }
+
+  // ใช้ Gemini ถ้ามี key
+  if (geminiKey) {
+    try {
+      const genAI = new GoogleGenerativeAI(geminiKey);
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+      const result = await model.generateContent(buildPrompt(faqCsv, userMessage));
+      const text = result.response.text();
+
+      if (!text || !text.trim()) return DEFAULT_REPLY;
+      return text;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : JSON.stringify(err);
+      console.error('[Gemini] API call failed:', msg);
+      return buildSimpleReply(faqCsv, userMessage);
+    }
+  }
+
+  return buildSimpleReply(faqCsv, userMessage);
 }
