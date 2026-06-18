@@ -8,14 +8,23 @@ import { SAMPLE_PRODUCTS, CATEGORIES, CATEGORIES_EN, Product } from '../../lib/p
 
 type Lang = 'th' | 'en';
 
-function ProductCard({ product, lang, onAdd }: { product: Product; lang: Lang; onAdd: () => void }) {
+const SIZES = ['3M', '6M', '12M', '18M', '2T', '3T', '4T', '5T'];
+
+function discountPct(price: number, sale: number) {
+  return Math.round(((price - sale) / price) * 100);
+}
+
+function ProductCard({ product, lang, onAdd, added }: {
+  product: Product; lang: Lang; onAdd: () => void; added: boolean;
+}) {
   const [imgErr, setImgErr] = useState(false);
   const name = lang === 'th' ? product.name_th : product.name_en;
+  const pct = discountPct(product.price, product.sale_price);
 
   return (
-    <div className="bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
       {/* Image */}
-      <div className="relative aspect-square bg-gradient-to-br from-pastel-pink-light to-pastel-blue-light">
+      <div className="relative aspect-square bg-gray-50">
         {product.image && !imgErr ? (
           <Image
             src={product.image.startsWith('http') ? product.image : `/images/${product.image}`}
@@ -24,8 +33,16 @@ function ProductCard({ product, lang, onAdd }: { product: Product; lang: Lang; o
         ) : (
           <div className="w-full h-full flex items-center justify-center text-6xl">👕</div>
         )}
-        <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-          SALE
+        {/* % OFF circle */}
+        {pct > 0 && (
+          <div className="absolute top-2 left-2 w-12 h-12 bg-red-500 text-white rounded-full flex flex-col items-center justify-center leading-tight shadow-md">
+            <span className="text-xs font-extrabold">{pct}%</span>
+            <span className="text-[9px] font-bold">OFF</span>
+          </div>
+        )}
+        {/* SALE badge */}
+        <div className="absolute top-2 right-2 bg-yellow-400 text-gray-900 text-[9px] font-extrabold px-2 py-0.5 rounded">
+          SALE !
         </div>
         {!product.in_stock && (
           <div className="absolute inset-0 bg-white/70 flex items-center justify-center">
@@ -37,31 +54,54 @@ function ProductCard({ product, lang, onAdd }: { product: Product; lang: Lang; o
       </div>
 
       {/* Info */}
-      <div className="p-4 flex flex-col flex-1">
-        <div className="chip-blue text-[10px] mb-1.5">{product.category}</div>
-        <h3 className="font-bold text-gray-900 text-sm leading-snug mb-3 flex-1">{name}</h3>
+      <div className="p-3 flex flex-col flex-1">
+        {/* Category tag */}
+        <span className="text-[10px] text-brand-pink font-bold bg-pink-50 border border-pink-100 px-2 py-0.5 rounded-full self-start mb-1.5">
+          {product.category}
+        </span>
 
-        {/* 3-tier pricing */}
-        <div className="space-y-1 mb-3">
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span>{lang === 'th' ? 'ราคาเต็ม' : 'Full Price'}</span>
-            <span className="line-through">{product.price.toLocaleString()} ฿</span>
+        {/* Name */}
+        <h3 className="font-bold text-gray-900 text-sm leading-snug mb-2 flex-1">{name}</h3>
+
+        {/* Size chips */}
+        <div className="flex flex-wrap items-center gap-1 mb-2.5">
+          {SIZES.slice(0, 5).map(s => (
+            <span key={s} className="text-[9px] border border-gray-300 text-gray-500 px-1.5 py-0.5 rounded">
+              {s}
+            </span>
+          ))}
+          <span className="text-[9px] text-gray-400">+{SIZES.length - 5}</span>
+        </div>
+
+        {/* Prices */}
+        <div className="mb-3">
+          <div className="flex items-baseline gap-2">
+            <span className="text-red-500 font-extrabold text-lg leading-none">
+              {product.sale_price.toLocaleString()} ฿
+            </span>
+            <span className="text-gray-400 text-xs line-through">
+              {product.price.toLocaleString()} ฿
+            </span>
           </div>
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-gray-600">{lang === 'th' ? 'ราคาปลีก' : 'Retail'}</span>
-            <span className="text-base font-extrabold text-brand-pink">{product.sale_price.toLocaleString()} ฿</span>
-          </div>
-          <div className="flex items-center justify-between bg-yellow-50 rounded-xl px-2 py-1">
-            <span className="text-xs font-semibold text-yellow-700">{lang === 'th' ? 'ราคาส่ง' : 'Wholesale'}</span>
-            <span className="text-base font-extrabold text-yellow-600">{product.wholesale_price.toLocaleString()} ฿</span>
+          <div className="mt-1">
+            <span className="text-[10px] text-yellow-700 bg-yellow-50 border border-yellow-200 px-2 py-0.5 rounded font-bold">
+              {lang === 'th' ? 'ราคาส่ง' : 'Wholesale'}: {product.wholesale_price.toLocaleString()} ฿
+            </span>
           </div>
         </div>
 
+        {/* Button */}
         <button
           onClick={onAdd}
           disabled={!product.in_stock}
-          className="w-full btn-pink py-2.5 text-sm disabled:opacity-40 disabled:cursor-not-allowed justify-center">
-          🛒 {lang === 'th' ? 'เพิ่มในตะกร้า' : 'Add to Cart'}
+          className={`w-full py-2.5 text-sm font-bold rounded-lg transition-all duration-150 active:scale-95 ${
+            added
+              ? 'bg-green-500 text-white'
+              : 'bg-brand-pink text-white hover:bg-brand-pink-dark'
+          } disabled:opacity-40 disabled:cursor-not-allowed`}>
+          {added
+            ? (lang === 'th' ? '✓ เพิ่มแล้ว!' : '✓ Added!')
+            : (lang === 'th' ? '🛒 ใส่ตะกร้า' : '🛒 Add to Cart')}
         </button>
       </div>
     </div>
@@ -73,6 +113,7 @@ export default function ShopPage() {
   const [category, setCategory] = useState('ทั้งหมด');
   const [cartOpen, setCartOpen] = useState(false);
   const [addedId, setAddedId] = useState<string | null>(null);
+  const [sort, setSort] = useState('default');
   const { addItem, count } = useCart();
 
   const cats = lang === 'th' ? CATEGORIES : CATEGORIES_EN;
@@ -82,9 +123,12 @@ export default function ShopPage() {
   };
 
   const activeCatTh = lang === 'th' ? category : (catMap[category] ?? 'ทั้งหมด');
-  const filtered = activeCatTh === 'ทั้งหมด'
-    ? SAMPLE_PRODUCTS
+  let filtered = activeCatTh === 'ทั้งหมด'
+    ? [...SAMPLE_PRODUCTS]
     : SAMPLE_PRODUCTS.filter(p => p.category === activeCatTh);
+
+  if (sort === 'price-asc') filtered.sort((a, b) => a.sale_price - b.sale_price);
+  if (sort === 'price-desc') filtered.sort((a, b) => b.sale_price - a.sale_price);
 
   function handleAdd(product: Product) {
     addItem({
@@ -100,86 +144,208 @@ export default function ShopPage() {
   }
 
   return (
-    <div className="min-h-screen bg-pastel-pink-light font-prompt">
+    <div className="min-h-screen bg-gray-50 font-prompt">
+      {/* Announcement bar */}
+      <div className="bg-brand-pink text-white text-xs font-bold text-center py-2 px-4 tracking-wide">
+        🎉 {lang === 'th'
+          ? 'ลดราคาพิเศษ! เสื้อผ้าเด็กคุณภาพโรงงาน ผ้านุ่ม ใส่สบาย — ส่งทั่วไทย'
+          : 'Special Sale! Factory-quality kids clothing, soft & comfortable — Nationwide delivery'}
+      </div>
+
       {/* Nav */}
-      <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur border-b border-pink-100 px-4 h-16 flex items-center justify-between shadow-sm">
-        <a href="/" className="flex items-center gap-1.5">
-          <span className="font-extrabold text-gray-900">Baby</span>
-          <span className="font-extrabold text-brand-pink">Cheepy</span>
-          <span className="text-xs text-gray-400 ml-1">{lang === 'th' ? 'ร้านค้า' : 'Shop'}</span>
-        </a>
-        <div className="flex items-center gap-3">
-          <button onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
-            className="text-xs font-bold text-gray-500 border border-gray-200 rounded-full px-2.5 py-1 hover:border-pink-300 hover:text-brand-pink transition-colors">
-            {lang === 'th' ? 'EN' : 'TH'}
-          </button>
-          <button onClick={() => setCartOpen(true)}
-            className="relative w-10 h-10 bg-brand-pink text-white rounded-full flex items-center justify-center shadow-md hover:bg-brand-pink-dark transition-colors">
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-            {count > 0 && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-yellow-400 text-gray-900 text-[10px] font-extrabold rounded-full flex items-center justify-center">
-                {count}
-              </span>
-            )}
-          </button>
+      <nav className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
+          <a href="/" className="flex items-center gap-1">
+            <span className="font-extrabold text-xl text-gray-900">Baby</span>
+            <span className="font-extrabold text-xl text-brand-pink">Cheepy</span>
+          </a>
+
+          <div className="hidden md:flex items-center gap-6 text-sm font-semibold text-gray-600">
+            <a href="/" className="hover:text-brand-pink transition-colors">หน้าแรก</a>
+            <a href="/shop" className="text-brand-pink border-b-2 border-brand-pink pb-0.5">ร้านค้า</a>
+            <a href="/services" className="hover:text-brand-pink transition-colors">บริการ</a>
+            <a href="/#quote" className="hover:text-brand-pink transition-colors">สั่งผลิต OEM</a>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
+              className="text-xs font-bold text-gray-500 border border-gray-200 rounded px-2.5 py-1 hover:border-pink-300 hover:text-brand-pink transition-colors">
+              {lang === 'th' ? 'EN' : 'TH'}
+            </button>
+            <button
+              onClick={() => setCartOpen(true)}
+              className="relative flex items-center gap-1.5 bg-brand-pink text-white text-sm font-bold px-3 py-1.5 rounded-lg hover:bg-brand-pink-dark transition-colors">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+              <span>{lang === 'th' ? 'ตะกร้า' : 'Cart'}</span>
+              {count > 0 && (
+                <span className="w-5 h-5 bg-yellow-400 text-gray-900 text-[10px] font-extrabold rounded-full flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </button>
+          </div>
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 py-10">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="chip mb-3">{lang === 'th' ? '🛍️ ร้านค้าออนไลน์' : '🛍️ Online Shop'}</div>
-          <h1 className="text-4xl font-extrabold text-gray-900 mb-2">
-            {lang === 'th' ? 'สินค้าทั้งหมด' : 'All Products'}
-          </h1>
-          <p className="text-gray-500 text-sm">
-            {lang === 'th'
-              ? 'สินค้าคุณภาพโรงงาน Baby Cheepy — ส่งทั่วไทย'
-              : 'Factory-quality Baby Cheepy products — nationwide delivery'}
-          </p>
+      <div className="max-w-6xl mx-auto px-4 py-6">
+        {/* Breadcrumb */}
+        <nav className="flex items-center gap-1.5 text-xs text-gray-500 mb-5">
+          <a href="/" className="hover:text-brand-pink transition-colors">หน้าแรก</a>
+          <span>›</span>
+          <a href="/shop" className="hover:text-brand-pink transition-colors">
+            {lang === 'th' ? 'หมวดสินค้า' : 'Products'}
+          </a>
+          <span>›</span>
+          <span className="text-gray-800 font-semibold">
+            {lang === 'th' ? 'เสื้อผ้าเด็กเลือก Size ได้' : 'Kids Clothing — Choose Size'}
+          </span>
+        </nav>
+
+        {/* Promo banner */}
+        <div className="relative bg-gradient-to-r from-pink-500 via-pink-400 to-rose-400 rounded-2xl p-5 mb-6 text-white overflow-hidden">
+          <div className="absolute -right-4 -top-4 text-[120px] opacity-10 select-none">👶</div>
+          <div className="relative z-10 flex items-center justify-between flex-wrap gap-3">
+            <div>
+              <span className="inline-block bg-yellow-400 text-gray-900 text-[10px] font-extrabold px-2 py-0.5 rounded mb-2">
+                SALE !
+              </span>
+              <h2 className="text-xl font-extrabold mb-0.5">
+                {lang === 'th' ? 'ชุดเด็กคุณภาพโรงงาน Baby Cheepy' : 'Baby Cheepy Factory-Quality Kids Clothing'}
+              </h2>
+              <p className="text-sm text-pink-100">
+                {lang === 'th'
+                  ? 'ผ้านุ่ม ใส่สบาย | เลือก Size ได้ | ผลิตในไทย | ส่งทั่วประเทศ'
+                  : 'Soft fabric | Choose your size | Made in Thailand | Nationwide shipping'}
+              </p>
+            </div>
+            <a href="/#quote"
+              className="flex-shrink-0 bg-white text-brand-pink font-extrabold text-sm px-5 py-2.5 rounded-xl hover:bg-pink-50 transition-colors shadow-md">
+              {lang === 'th' ? '📋 สั่งผลิต OEM' : '📋 OEM Order'}
+            </a>
+          </div>
         </div>
 
-        {/* Category filter */}
-        <div className="flex flex-wrap gap-2 justify-center mb-8">
+        {/* Category tabs */}
+        <div className="bg-white border border-gray-200 rounded-xl p-1 flex gap-1 flex-wrap mb-5 shadow-sm">
           {cats.map((cat, i) => (
-            <button key={i} onClick={() => setCategory(cat)}
-              className={`px-4 py-2 rounded-full text-sm font-bold transition-all border-2 ${
+            <button
+              key={i}
+              onClick={() => setCategory(lang === 'th' ? cat : cat)}
+              className={`px-4 py-2 rounded-lg text-sm font-bold transition-all ${
                 (lang === 'th' ? category === cat : (catMap[cat] ?? cat) === activeCatTh)
-                  ? 'bg-brand-pink text-white border-brand-pink shadow-md'
-                  : 'bg-white text-gray-600 border-gray-200 hover:border-pink-300 hover:text-brand-pink'
+                  ? 'bg-brand-pink text-white shadow-sm'
+                  : 'text-gray-600 hover:bg-gray-100 hover:text-brand-pink'
               }`}>
               {cat}
             </button>
           ))}
         </div>
 
-        {/* Added toast */}
-        {addedId && (
-          <div className="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-green-500 text-white text-sm font-bold px-5 py-2.5 rounded-full shadow-lg">
-            ✅ {lang === 'th' ? 'เพิ่มในตะกร้าแล้ว!' : 'Added to cart!'}
-          </div>
-        )}
+        {/* Sort & count bar */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm text-gray-600">
+            {lang === 'th' ? 'พบ' : 'Found'}{' '}
+            <span className="font-bold text-gray-900">{filtered.length}</span>{' '}
+            {lang === 'th' ? 'รายการ' : 'items'}
+          </p>
+          <select
+            value={sort}
+            onChange={e => setSort(e.target.value)}
+            className="text-sm border border-gray-200 rounded-lg px-3 py-1.5 text-gray-600 bg-white focus:outline-none focus:border-brand-pink cursor-pointer">
+            <option value="default">{lang === 'th' ? 'เรียงค่าเริ่มต้น' : 'Default'}</option>
+            <option value="price-asc">{lang === 'th' ? 'ราคา น้อย → มาก' : 'Price: Low to High'}</option>
+            <option value="price-desc">{lang === 'th' ? 'ราคา มาก → น้อย' : 'Price: High to Low'}</option>
+          </select>
+        </div>
 
         {/* Products grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map(product => (
-            <ProductCard key={product.id} product={product} lang={lang}
-              onAdd={() => handleAdd(product)} />
+            <ProductCard
+              key={product.id}
+              product={product}
+              lang={lang}
+              added={addedId === product.id}
+              onAdd={() => handleAdd(product)}
+            />
           ))}
         </div>
 
         {filtered.length === 0 && (
           <div className="text-center py-20 text-gray-400">
             <div className="text-5xl mb-3">🔍</div>
-            <p>{lang === 'th' ? 'ไม่พบสินค้าในหมวดนี้' : 'No products in this category.'}</p>
+            <p className="font-semibold">
+              {lang === 'th' ? 'ไม่พบสินค้าในหมวดนี้' : 'No products in this category.'}
+            </p>
           </div>
         )}
 
-        {/* Back to main */}
-        <div className="text-center mt-12">
+        {/* Trust features bar */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-10 bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+          {[
+            {
+              icon: '🚚',
+              title: lang === 'th' ? 'ส่งทั่วไทย' : 'Nationwide Shipping',
+              sub: lang === 'th' ? 'ทุกออเดอร์' : 'All orders',
+            },
+            {
+              icon: '🏭',
+              title: lang === 'th' ? 'คุณภาพโรงงาน' : 'Factory Quality',
+              sub: lang === 'th' ? 'ตรวจ QC ทุกชิ้น' : 'QC checked every item',
+            },
+            {
+              icon: '📏',
+              title: lang === 'th' ? 'เลือก Size ได้' : 'Choose Your Size',
+              sub: '3M – 10T',
+            },
+            {
+              icon: '💬',
+              title: lang === 'th' ? 'บริการหลังการขาย' : 'After-sale Support',
+              sub: 'Line / Facebook',
+            },
+          ].map((f, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-pink-50 rounded-xl flex items-center justify-center text-xl flex-shrink-0">
+                {f.icon}
+              </div>
+              <div>
+                <p className="text-sm font-bold text-gray-900 leading-tight">{f.title}</p>
+                <p className="text-xs text-gray-500">{f.sub}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Contact section */}
+        <div className="mt-6 bg-white rounded-2xl border border-gray-200 p-5 shadow-sm">
+          <h3 className="font-bold text-gray-800 text-sm mb-3">
+            {lang === 'th' ? '📞 ติดต่อสอบถาม / สั่งซื้อ' : '📞 Contact Us / Order'}
+          </h3>
+          <div className="flex flex-wrap gap-3">
+            <a href="https://line.me" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#06C755] text-white text-sm font-bold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
+              <span>Line</span>
+              <span className="text-xs font-normal opacity-90">@babycheepy</span>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-[#1877F2] text-white text-sm font-bold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
+              <span>Facebook</span>
+              <span className="text-xs font-normal opacity-90">Baby Cheepy</span>
+            </a>
+            <a href="https://tiktok.com" target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-2 bg-gray-900 text-white text-sm font-bold px-4 py-2 rounded-lg hover:opacity-90 transition-opacity">
+              <span>TikTok</span>
+              <span className="text-xs font-normal opacity-90">@babycheepy</span>
+            </a>
+          </div>
+        </div>
+
+        {/* OEM CTA */}
+        <div className="text-center mt-8 mb-4">
           <a href="/#quote" className="btn-outline-pink">
             {lang === 'th' ? '📋 สั่งผลิต OEM/ODM →' : '📋 OEM/ODM Custom Order →'}
           </a>
