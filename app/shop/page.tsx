@@ -8,8 +8,6 @@ import { SAMPLE_PRODUCTS, CATEGORIES, CATEGORIES_EN, Product } from '../../lib/p
 
 type Lang = 'th' | 'en';
 
-const SIZES = ['3M', '6M', '12M', '18M', '2T', '3T', '4T', '5T'];
-
 function discountPct(price: number, sale: number) {
   return Math.round(((price - sale) / price) * 100);
 }
@@ -18,11 +16,13 @@ function ProductCard({ product, lang, onAdd, added }: {
   product: Product; lang: Lang; onAdd: () => void; added: boolean;
 }) {
   const [imgErr, setImgErr] = useState(false);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const name = lang === 'th' ? product.name_th : product.name_en;
   const pct = discountPct(product.price, product.sale_price);
+  const SHOW_SIZES = 6;
 
   return (
-    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
+    <div className="bg-white rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
       {/* Image */}
       <div className="relative aspect-square bg-gray-50">
         {product.image && !imgErr ? (
@@ -35,9 +35,9 @@ function ProductCard({ product, lang, onAdd, added }: {
         )}
         {/* % OFF circle */}
         {pct > 0 && (
-          <div className="absolute top-2 left-2 w-12 h-12 bg-red-500 text-white rounded-full flex flex-col items-center justify-center leading-tight shadow-md">
-            <span className="text-xs font-extrabold">{pct}%</span>
-            <span className="text-[9px] font-bold">OFF</span>
+          <div className="absolute top-2 left-2 w-11 h-11 bg-red-500 text-white rounded-full flex flex-col items-center justify-center leading-tight shadow">
+            <span className="text-[11px] font-extrabold">{pct}%</span>
+            <span className="text-[8px] font-bold">OFF</span>
           </div>
         )}
         {/* SALE badge */}
@@ -55,26 +55,38 @@ function ProductCard({ product, lang, onAdd, added }: {
 
       {/* Info */}
       <div className="p-3 flex flex-col flex-1">
-        {/* Category tag */}
-        <span className="text-[10px] text-brand-pink font-bold bg-pink-50 border border-pink-100 px-2 py-0.5 rounded-full self-start mb-1.5">
-          {product.category}
-        </span>
-
-        {/* Name */}
-        <h3 className="font-bold text-gray-900 text-sm leading-snug mb-2 flex-1">{name}</h3>
-
-        {/* Size chips */}
-        <div className="flex flex-wrap items-center gap-1 mb-2.5">
-          {SIZES.slice(0, 5).map(s => (
-            <span key={s} className="text-[9px] border border-gray-300 text-gray-500 px-1.5 py-0.5 rounded">
+        {/* Size chips — selectable */}
+        <div className="flex flex-wrap items-center gap-1 mb-2">
+          {product.sizes.slice(0, SHOW_SIZES).map(s => (
+            <button
+              key={s}
+              onClick={() => setSelectedSize(selectedSize === s ? null : s)}
+              className={`text-[10px] px-1.5 py-0.5 rounded border transition-colors ${
+                selectedSize === s
+                  ? 'bg-brand-pink border-brand-pink text-white font-bold'
+                  : 'border-gray-300 text-gray-500 hover:border-brand-pink hover:text-brand-pink'
+              }`}>
               {s}
-            </span>
+            </button>
           ))}
-          <span className="text-[9px] text-gray-400">+{SIZES.length - 5}</span>
+          {product.sizes.length > SHOW_SIZES && (
+            <span className="text-[9px] text-gray-400">+{product.sizes.length - SHOW_SIZES}</span>
+          )}
         </div>
 
+        {/* Code + Category */}
+        <div className="flex items-center gap-1.5 mb-1">
+          <span className="text-[9px] text-gray-400 font-mono">{product.code}</span>
+          <span className="text-[9px] text-brand-pink font-bold bg-pink-50 border border-pink-100 px-1.5 py-0.5 rounded-full">
+            {product.category}
+          </span>
+        </div>
+
+        {/* Name */}
+        <h3 className="font-bold text-gray-900 text-sm leading-snug mb-2.5 flex-1 line-clamp-2">{name}</h3>
+
         {/* Prices */}
-        <div className="mb-3">
+        <div className="mb-2.5">
           <div className="flex items-baseline gap-2">
             <span className="text-red-500 font-extrabold text-lg leading-none">
               {product.sale_price.toLocaleString()} ฿
@@ -94,14 +106,16 @@ function ProductCard({ product, lang, onAdd, added }: {
         <button
           onClick={onAdd}
           disabled={!product.in_stock}
-          className={`w-full py-2.5 text-sm font-bold rounded-lg transition-all duration-150 active:scale-95 ${
+          className={`w-full py-2 text-sm font-bold rounded-lg transition-all duration-150 active:scale-95 ${
             added
               ? 'bg-green-500 text-white'
               : 'bg-brand-pink text-white hover:bg-brand-pink-dark'
           } disabled:opacity-40 disabled:cursor-not-allowed`}>
           {added
             ? (lang === 'th' ? '✓ เพิ่มแล้ว!' : '✓ Added!')
-            : (lang === 'th' ? '🛒 ใส่ตะกร้า' : '🛒 Add to Cart')}
+            : selectedSize
+              ? (lang === 'th' ? `🛒 ใส่ตะกร้า (${selectedSize})` : `🛒 Add (${selectedSize})`)
+              : (lang === 'th' ? '🛒 ใส่ตะกร้า' : '🛒 Add to Cart')}
         </button>
       </div>
     </div>
