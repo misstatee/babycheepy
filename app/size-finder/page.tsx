@@ -105,6 +105,7 @@ export default function SizeFinderPage() {
             <a href="/" className="hover:text-brand-pink transition-colors">หน้าแรก</a>
             <a href="/shop" className="hover:text-brand-pink transition-colors">ร้านค้า</a>
             <a href="/size-finder" className="text-brand-pink border-b-2 border-brand-pink pb-0.5">วัดไซซ์ AI</a>
+            <a href="/try-on" className="hover:text-brand-pink transition-colors">ลองชุดเสมือน</a>
             <a href="/#quote" className="hover:text-brand-pink transition-colors">สั่งผลิต OEM</a>
           </div>
         </div>

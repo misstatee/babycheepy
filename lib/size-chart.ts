@@ -132,6 +132,52 @@ function toMeters(cutCm: number): number {
   return Math.ceil(cutCm * (1 + SHRINKAGE)) / 100;
 }
 
+/* ============================================================
+ * Fit Assessment — เทียบไซซ์ชุดกับไซซ์ตัวเด็ก
+ * ============================================================ */
+
+export const SIZE_ORDER: SizeCode[] = ['80', '90', '95', '100', '110', '115', '120', '130', '135', '140'];
+
+export type FitLevel = 'perfect' | 'slightly_large' | 'too_large' | 'slightly_small' | 'too_small';
+
+export interface FitResult {
+  level: FitLevel;
+  diff: number; // outfitIndex - childIndex (บวก = ชุดใหญ่กว่าตัว)
+  labelTh: string;
+  adviceTh: string;
+}
+
+/** เทียบไซซ์ชุด (outfitSize) กับไซซ์ที่เหมาะกับตัวเด็ก (childSize) */
+export function assessFit(childSize: SizeCode, outfitSize: SizeCode): FitResult {
+  const diff = SIZE_ORDER.indexOf(outfitSize) - SIZE_ORDER.indexOf(childSize);
+
+  if (diff === 0) {
+    return { level: 'perfect', diff, labelTh: 'พอดีตัว', adviceTh: 'ไซซ์นี้เหมาะกับน้องพอดี ใส่ได้สบาย' };
+  }
+  if (diff === 1) {
+    return {
+      level: 'slightly_large', diff, labelTh: 'ใหญ่กว่าตัวเล็กน้อย',
+      adviceTh: 'หลวมนิดหน่อย แขน/ชายอาจยาวเกินเล็กน้อย แต่ใส่ได้และเผื่อโตได้อีกประมาณ 1 ปี',
+    };
+  }
+  if (diff >= 2) {
+    return {
+      level: 'too_large', diff, labelTh: 'ใหญ่เกินไป',
+      adviceTh: `ชุดใหญ่กว่าตัวน้อง ${diff} ไซซ์ จะหลวมมาก แนะนำลดลงมาใช้ไซซ์ที่พอดีตัว`,
+    };
+  }
+  if (diff === -1) {
+    return {
+      level: 'slightly_small', diff, labelTh: 'เล็กกว่าตัวเล็กน้อย',
+      adviceTh: 'ค่อนข้างคับ แขน/ชายอาจสั้น ใส่ได้ไม่นานเพราะน้องกำลังโต แนะนำขยับขึ้น 1 ไซซ์',
+    };
+  }
+  return {
+    level: 'too_small', diff, labelTh: 'เล็กเกินไป',
+    adviceTh: `ชุดเล็กกว่าตัวน้อง ${Math.abs(diff)} ไซซ์ จะคับและสั้นมาก ไม่แนะนำให้ใช้ไซซ์นี้`,
+  };
+}
+
 /** ประมาณผ้าที่ใช้ต่อ 1 ตัว ของแต่ละประเภท ตามไซซ์ */
 export function fabricConsumption(size: SizeCode): FabricItem[] {
   const d = GARMENT_DIMS[size];

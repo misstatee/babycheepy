@@ -284,6 +284,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           </div>
           <a href="/shop"      className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.shop}</a>
           <a href="/size-finder" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{lang === 'th' ? 'วัดไซซ์ AI' : 'AI Size Finder'}</a>
+          <a href="/try-on" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{lang === 'th' ? 'ลองชุดเสมือน' : 'Virtual Try-On'}</a>
           <a href="/ideas"     className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.ideas}</a>
           <a href="#portfolio" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.portfolio}</a>
           <a href="#contact"   className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.contact}</a>

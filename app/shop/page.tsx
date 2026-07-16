@@ -178,6 +178,7 @@ export default function ShopPage() {
             <a href="/" className="hover:text-brand-pink transition-colors">หน้าแรก</a>
             <a href="/shop" className="text-brand-pink border-b-2 border-brand-pink pb-0.5">ร้านค้า</a>
             <a href="/size-finder" className="hover:text-brand-pink transition-colors">วัดไซซ์ AI</a>
+            <a href="/try-on" className="hover:text-brand-pink transition-colors">ลองชุดเสมือน</a>
             <a href="/services" className="hover:text-brand-pink transition-colors">บริการ</a>
             <a href="/#quote" className="hover:text-brand-pink transition-colors">สั่งผลิต OEM</a>
           </div>
