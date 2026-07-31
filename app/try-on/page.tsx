@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { SIZE_ORDER, type FitResult, type SizeRecommendation } from '../../lib/size-chart';
+import MemberGate from '../components/MemberGate';
 
 interface TryOnResponse {
   ok: boolean;
@@ -139,6 +140,8 @@ export default function TryOnPage() {
             <a href="/shop" className="hover:text-brand-pink transition-colors">ร้านค้า</a>
             <a href="/size-finder" className="hover:text-brand-pink transition-colors">วัดไซซ์ AI</a>
             <a href="/try-on" className="text-brand-pink border-b-2 border-brand-pink pb-0.5">ลองชุดเสมือน</a>
+            <a href="/member-register" className="text-brand-pink font-extrabold">สมัครสมาชิก Club</a>
+            <a href="/member-login" className="hover:text-brand-pink transition-colors">เข้าสู่ระบบ</a>
             <a href="/#quote" className="hover:text-brand-pink transition-colors">สั่งผลิต OEM</a>
           </div>
         </div>
@@ -155,6 +158,7 @@ export default function TryOnPage() {
           </p>
         </div>
 
+        <MemberGate>
         {/* Upload 2 รูป */}
         <div className="flex flex-col sm:flex-row gap-4 mb-5">
           <UploadBox
@@ -299,6 +303,7 @@ export default function TryOnPage() {
             </p>
           </div>
         )}
+        </MemberGate>
       </div>
     </div>
   );

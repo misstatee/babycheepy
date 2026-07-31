@@ -33,10 +33,11 @@ function ImageSlot({ src, alt, className, hint, emoji = '📸' }: {
   src: string; alt: string; className?: string; hint?: string; emoji?: string;
 }) {
   const [err, setErr] = useState(false);
+  const imageSrc = encodeURI(src);
   return (
     <div className={`absolute inset-0 overflow-hidden ${className ?? ''}`}>
       {!err
-        ? <img src={src} alt={alt} className="w-full h-full object-cover" onError={() => setErr(true)} />
+        ? <img src={imageSrc} alt={alt} className="w-full h-full object-cover" onError={() => setErr(true)} />
         : <div className="img-slot text-center px-4">
             <span className="text-5xl mb-2">{emoji}</span>
             <p className="text-xs text-gray-400 font-medium">{hint ?? src}</p>

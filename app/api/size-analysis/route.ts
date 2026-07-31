@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { recommendSize, fabricConsumption } from '../../../lib/size-chart';
+import { requireActiveMemberApi } from '../../../lib/member/auth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -80,6 +81,9 @@ async function analyzeImage(base64: string, mimeType: string): Promise<VisionRes
 }
 
 export async function POST(req: NextRequest) {
+  const member = await requireActiveMemberApi();
+  if (!member.ok) return member.response;
+
   try {
     const body = await req.json();
     const { image, mimeType, heightCm, weightKg } = body as {

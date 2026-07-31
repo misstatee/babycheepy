@@ -3,6 +3,7 @@
 import { useRef, useState } from 'react';
 import type { SizeRecommendation, FabricItem } from '../../lib/size-chart';
 import { GARMENT_DIMS } from '../../lib/size-chart';
+import MemberGate from '../components/MemberGate';
 
 interface ApiResult {
   ok: boolean;
@@ -106,6 +107,8 @@ export default function SizeFinderPage() {
             <a href="/shop" className="hover:text-brand-pink transition-colors">ร้านค้า</a>
             <a href="/size-finder" className="text-brand-pink border-b-2 border-brand-pink pb-0.5">วัดไซซ์ AI</a>
             <a href="/try-on" className="hover:text-brand-pink transition-colors">ลองชุดเสมือน</a>
+            <a href="/member-register" className="text-brand-pink font-extrabold">สมัครสมาชิก Club</a>
+            <a href="/member-login" className="hover:text-brand-pink transition-colors">เข้าสู่ระบบ</a>
             <a href="/#quote" className="hover:text-brand-pink transition-colors">สั่งผลิต OEM</a>
           </div>
         </div>
@@ -123,6 +126,7 @@ export default function SizeFinderPage() {
           </p>
         </div>
 
+        <MemberGate>
         {/* Tabs */}
         <div className="bg-white border border-gray-200 rounded-xl p-1 flex gap-1 mb-5 shadow-sm">
           {(['photo', 'manual'] as const).map((t) => (
@@ -336,6 +340,7 @@ export default function SizeFinderPage() {
             </p>
           </div>
         )}
+        </MemberGate>
       </div>
     </div>
   );

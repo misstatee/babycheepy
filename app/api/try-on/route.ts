@@ -4,6 +4,7 @@ import {
   recommendSize, assessFit, SIZE_ORDER,
   type SizeCode, type FitResult, type SizeRecommendation,
 } from '../../../lib/size-chart';
+import { requireActiveMemberApi } from '../../../lib/member/auth';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -159,6 +160,9 @@ function normalizeSize(value: string | null | undefined): SizeCode | null {
 }
 
 export async function POST(req: NextRequest) {
+  const member = await requireActiveMemberApi();
+  if (!member.ok) return member.response;
+
   try {
     const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
     if (!apiKey) {
