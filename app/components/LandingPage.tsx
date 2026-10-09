@@ -287,6 +287,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
           <a href="/size-finder" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{lang === 'th' ? 'วัดไซซ์ AI' : 'AI Size Finder'}</a>
           <a href="/try-on" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{lang === 'th' ? 'ลองชุดเสมือน' : 'Virtual Try-On'}</a>
           <a href="/ideas"     className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.ideas}</a>
+          <a href="/articles"  className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{lang === 'th' ? 'บทความ' : 'Articles'}</a>
           <a href="#portfolio" className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.portfolio}</a>
           <a href="#contact"   className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.contact}</a>
           <a href="/location"  className="px-3 py-2 rounded-xl hover:text-coral hover:bg-coral-light transition-colors">{t.nav.location}</a>
@@ -327,7 +328,7 @@ function NavBar({ lang, setLang }: { lang: Lang; setLang: (l: Lang) => void }) {
       {/* Mobile menu */}
       {open && (
         <div className="lg:hidden bg-white border-t border-orange-100 px-4 pb-4 space-y-1 text-sm font-semibold">
-          {([['#hero', t.nav.home], ['#about', t.nav.about], ['/shop', t.nav.shop], ['/ideas', t.nav.ideas], ['#portfolio', t.nav.portfolio], ['#contact', t.nav.contact], ['/location', t.nav.location]] as [string, string][]).map(([href, label]) => (
+          {([['#hero', t.nav.home], ['#about', t.nav.about], ['/shop', t.nav.shop], ['/ideas', t.nav.ideas], ['/articles', lang === 'th' ? 'บทความ' : 'Articles'], ['#portfolio', t.nav.portfolio], ['#contact', t.nav.contact], ['/location', t.nav.location]] as [string, string][]).map(([href, label]) => (
             <a key={href} href={href} onClick={() => setOpen(false)}
               className="block px-3 py-2 rounded-xl hover:bg-coral-light text-gray-700">{label}</a>
           ))}
